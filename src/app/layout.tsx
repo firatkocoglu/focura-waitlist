@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     images: ['/images/focura-og.jpg'],
   },
   icons: {
-    icon: '/images/focura-logo.jpg',
+    icon: '/images/focura.png',
   },
 };
 

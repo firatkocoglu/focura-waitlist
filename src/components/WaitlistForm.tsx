@@ -58,16 +58,22 @@ const WaitlistForm = ({ source }: Props) => {
 
   return (
     <form className='waitlist-form' onSubmit={submit}>
-      <input
-        type='email'
-        name='email'
-        value={email}
-        onChange={(event) => setEmail(event.target.value)}
-        placeholder='you@example.com'
-        required
-        autoComplete='email'
-        aria-label='Email'
-      />
+      <div className='waitlist-row'>
+        <input
+          type='email'
+          name='email'
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          placeholder='you@example.com'
+          required
+          autoComplete='email'
+          aria-label='Email'
+        />
+        <button type='submit' disabled={status === 'loading'}>
+          {status === 'loading' ? 'Joining...' : 'Join Waitlist'}
+        </button>
+      </div>
+
       <input
         type='text'
         name='company'
@@ -76,14 +82,13 @@ const WaitlistForm = ({ source }: Props) => {
         className='honeypot'
         aria-hidden='true'
       />
-      <button type='submit' disabled={status === 'loading'}>
-        {status === 'loading' ? 'Joining...' : 'Join Waitlist'}
-      </button>
 
-      {status === 'success' && <p className='success'>You're on the list. Check your inbox.</p>}
-      {status === 'duplicate' && <p className='info'>You are already on the waitlist.</p>}
-      {status === 'invalid' && <p className='error'>Please enter a valid email address.</p>}
-      {status === 'error' && <p className='error'>Something went wrong. Please try again.</p>}
+      <div className='waitlist-messages'>
+        {status === 'success' && <p className='success'>You&apos;re on the list. Check your inbox.</p>}
+        {status === 'duplicate' && <p className='info'>You are already on the waitlist.</p>}
+        {status === 'invalid' && <p className='error'>Please enter a valid email address.</p>}
+        {status === 'error' && <p className='error'>Something went wrong. Please try again.</p>}
+      </div>
     </form>
   );
 };

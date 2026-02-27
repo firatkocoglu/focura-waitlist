@@ -1,27 +1,34 @@
 const items = [
   {
     title: 'Focused Sessions',
-    copy: 'Plan your sessions with intention and avoid scattered work loops.',
+    copy: 'Structure your work blocks with intent and reduce context switching.',
   },
   {
     title: 'Intentional Time Tracking',
-    copy: 'Measure time spent on what actually matters, not just activity.',
+    copy: 'See where your real execution time goes with clean daily visibility.',
   },
   {
-    title: 'Execution Momentum',
-    copy: 'Build consistency through small, repeated wins and clear progress.',
+    title: 'Momentum System',
+    copy: 'Build consistency with measurable progress, not scattered effort.',
   },
 ];
 
 const FeatureBlocks = () => {
   return (
     <section className='features'>
-      {items.map((item) => (
-        <article key={item.title}>
-          <h3>{item.title}</h3>
-          <p>{item.copy}</p>
-        </article>
-      ))}
+      <header className='section-heading'>
+        <p>Why Focura</p>
+        <h2>Made to turn intention into output</h2>
+      </header>
+
+      <div className='feature-grid'>
+        {items.map((item) => (
+          <article key={item.title} className='feature-card'>
+            <h3>{item.title}</h3>
+            <p>{item.copy}</p>
+          </article>
+        ))}
+      </div>
     </section>
   );
 };

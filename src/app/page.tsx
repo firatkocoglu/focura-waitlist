@@ -1,14 +1,13 @@
-import FeatureBlocks from '@/components/FeatureBlocks';
 import FooterLegal from '@/components/FooterLegal';
 import Hero from '@/components/Hero';
-import SocialProof from '@/components/SocialProof';
 
 export default function Home() {
   return (
-    <main className='container'>
+    <main className='landing'>
+      <div className='ambient ambient-1' aria-hidden='true' />
+      <div className='ambient ambient-2' aria-hidden='true' />
+
       <Hero />
-      <SocialProof />
-      <FeatureBlocks />
       <FooterLegal />
     </main>
   );
