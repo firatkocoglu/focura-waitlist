@@ -71,7 +71,13 @@ export async function POST(req: NextRequest) {
       .maybeSingle();
 
     if (existingError) {
-      return NextResponse.json({ ok: false, reason: 'server_error' }, { status: 500 });
+      console.error('waitlist.select_error', {
+        message: existingError.message,
+        code: existingError.code,
+        details: existingError.details,
+        hint: existingError.hint,
+      });
+      return NextResponse.json({ ok: false, reason: 'supabase_select_error' }, { status: 500 });
     }
 
     if (existing) {
@@ -83,13 +89,20 @@ export async function POST(req: NextRequest) {
       .insert({ email, source });
 
     if (insertError) {
-      return NextResponse.json({ ok: false, reason: 'server_error' }, { status: 500 });
+      console.error('waitlist.insert_error', {
+        message: insertError.message,
+        code: insertError.code,
+        details: insertError.details,
+        hint: insertError.hint,
+      });
+      return NextResponse.json({ ok: false, reason: 'supabase_insert_error' }, { status: 500 });
     }
 
     await sendWaitlistThankYouEmail(email);
 
     return NextResponse.json({ ok: true }, { status: 200 });
-  } catch {
-    return NextResponse.json({ ok: false, reason: 'server_error' }, { status: 500 });
+  } catch (error) {
+    console.error('waitlist.exception', error);
+    return NextResponse.json({ ok: false, reason: 'exception' }, { status: 500 });
   }
 }
