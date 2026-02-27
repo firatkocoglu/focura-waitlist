@@ -1,0 +1,26 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci
+        - |
+          cat > .env.production <<EOF
+          SUPABASE_URL=${SUPABASE_URL}
+          SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+          SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
+          NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+          PLAUSIBLE_DOMAIN=${PLAUSIBLE_DOMAIN}
+          RESEND_API_KEY=${RESEND_API_KEY}
+          WAITLIST_FROM_EMAIL=${WAITLIST_FROM_EMAIL}
+          EOF
+    build:
+      commands:
+        - npm run build
+  artifacts:
+    baseDirectory: .next
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*

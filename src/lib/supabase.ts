@@ -7,9 +7,11 @@ export const getSupabaseAdmin = () => {
 
   if (!supabaseUrl || !supabaseServiceRoleKey) {
     throw new Error(
-      `Missing Supabase env. SUPABASE_URL=${Boolean(supabaseUrl)} SUPABASE_SERVICE_ROLE_KEY=${Boolean(
-        supabaseServiceRoleKey
-      )}`
+      `Missing Supabase env. URL(${Boolean(process.env.SUPABASE_URL)}|${Boolean(
+        process.env.NEXT_PUBLIC_SUPABASE_URL
+      )}) KEY(${Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY)}|${Boolean(
+        process.env.SUPABASE_SERVICE_KEY
+      )})`
     );
   }
 
