@@ -39,20 +39,28 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const plausibleDomain = process.env.PLAUSIBLE_DOMAIN;
-  const shouldLoadPlausible =
-    process.env.NODE_ENV === 'production' && Boolean(plausibleDomain);
+  const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+  const shouldLoadGa = process.env.NODE_ENV === 'production' && Boolean(gaMeasurementId);
 
   return (
     <html lang='en'>
       <body>
-        {shouldLoadPlausible ? (
-          <Script
-            defer
-            data-domain={plausibleDomain as string}
-            src='https://plausible.io/js/script.js'
-            strategy='afterInteractive'
-          />
+        {shouldLoadGa ? (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
+              strategy='afterInteractive'
+            />
+            <Script id='ga4-init' strategy='afterInteractive'>
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                window.gtag = gtag;
+                gtag('js', new Date());
+                gtag('config', '${gaMeasurementId}');
+              `}
+            </Script>
+          </>
         ) : null}
         {children}
       </body>

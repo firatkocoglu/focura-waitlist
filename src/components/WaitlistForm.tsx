@@ -32,11 +32,11 @@ const WaitlistForm = ({ source }: Props) => {
         setStatus('success');
         setEmail('');
 
-        const plausible = (window as Window & {
-          plausible?: (eventName: string, options?: { props?: Record<string, string> }) => void;
-        }).plausible;
+        const gtag = (window as Window & {
+          gtag?: (command: string, eventName: string, params?: Record<string, string>) => void;
+        }).gtag;
 
-        plausible?.('waitlist_signup', { props: { source } });
+        gtag?.('event', 'waitlist_signup', { source });
         return;
       }
 
