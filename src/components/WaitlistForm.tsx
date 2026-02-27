@@ -11,10 +11,18 @@ type Status = 'idle' | 'loading' | 'success' | 'duplicate' | 'invalid' | 'error'
 const WaitlistForm = ({ source }: Props) => {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<Status>('idle');
+  const trackEvent = (eventName: string, params?: Record<string, string>) => {
+    const gtag = (window as Window & {
+      gtag?: (command: string, eventName: string, params?: Record<string, string>) => void;
+    }).gtag;
+
+    gtag?.('event', eventName, params);
+  };
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setStatus('loading');
+    trackEvent('waitlist_submit_attempt', { source });
 
     try {
       const formData = new FormData(event.currentTarget);
@@ -31,28 +39,27 @@ const WaitlistForm = ({ source }: Props) => {
       if (response.ok) {
         setStatus('success');
         setEmail('');
-
-        const gtag = (window as Window & {
-          gtag?: (command: string, eventName: string, params?: Record<string, string>) => void;
-        }).gtag;
-
-        gtag?.('event', 'waitlist_signup', { source });
+        trackEvent('waitlist_signup', { source });
         return;
       }
 
       if (payload.reason === 'duplicate') {
         setStatus('duplicate');
+        trackEvent('waitlist_submit_error', { source, reason: 'duplicate' });
         return;
       }
 
       if (payload.reason === 'invalid_email') {
         setStatus('invalid');
+        trackEvent('waitlist_submit_error', { source, reason: 'invalid_email' });
         return;
       }
 
       setStatus('error');
+      trackEvent('waitlist_submit_error', { source, reason: 'server_error' });
     } catch {
       setStatus('error');
+      trackEvent('waitlist_submit_error', { source, reason: 'network_error' });
     }
   };
 
